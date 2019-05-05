@@ -26,15 +26,18 @@
 ENTRY
   { address author
     booktitle booksubtitle
-    chapter conference-number conference-year conference-location
-    edition editor editortype
+    chapter
+    edition conference-number
+    year conference-year
+    location conference-location
+    editor editortype
     dimensions furtherresp
     howpublished illustrated institution
     isbn issn journal key month note marginnote number organization
     org-short pages pagename
     publisher reprinted-from reprinted-text school
     series subtitle section title type url urlaccessdate
-    volume year year-presented
+    volume year-presented
     abnt-and-type
     abnt-doi abnt-dont-use-etal
     abnt-etal-cite abnt-etal-list abnt-etal-text abnt-emphasize abnt-experimental
@@ -367,9 +370,10 @@ FUNCTION {write.entry.verbatim1}
    "booksubtitle" 	booksubtitle 		write.field.verbatim
    "chapter" 		chapter 		write.field.verbatim
    "conference-number" 	conference-number 	write.field.verbatim
-   "conference-year" 	conference-year 	write.field.verbatim
-   "conference-location" conference-location 	write.field.verbatim
    "edition" 		edition 		write.field.verbatim
+   "conference-year" 	conference-year 	write.field.verbatim
+   "location"           location         	write.field.verbatim
+   "conference-location" conference-location 	write.field.verbatim
    "editor" 		editor 			write.field.verbatim
    "editortype" 	editortype 		write.field.verbatim
    "dimensions" 	dimensions 		write.field.verbatim
@@ -1001,21 +1005,33 @@ FUNCTION {format.url}
 }
 
 FUNCTION {format.conference.info}
-{ conference-number empty$
-    'skip$
-    {conference-number "." * output}
-  if$
-  conference-year empty$
-    'skip$
-    {conference-year output}
-  if$
-  conference-location empty$
-    'skip$
-    {conference-location output}
-  if$
-  new.sentence
+{
+        conference-number empty$
+        {edition empty$
+                'skip$
+                {edition "." * output}
+                if$
+        }
+        {conference-number "." * output}
+        if$
+        conference-year empty$
+        {year empty$
+                'skip$
+                {year output}
+                if$
+        }
+        {conference-year output}
+        if$
+        conference-location empty$
+        {location empty$
+                'skip$
+                {location output}
+                if$
+        }
+        {conference-location output}
+        if$
+        new.sentence
 }
-
 
 FUNCTION {format.chapter.pages}
 { chapter empty$
